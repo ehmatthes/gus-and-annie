@@ -47,6 +47,8 @@ def make_color_histogram():
     # Initialize bins.
     bins = [0 for bin in range(0,num_bins+1)]
 
+    raw_sums = []
+
     # Make a histogram of color values.
     for row in rows:
         for pixel in row:
@@ -56,7 +58,17 @@ def make_color_histogram():
             bin_number = int(round(sum_rgb/bin_size))
             bins[bin_number] += 1
 
+            raw_sums.append(sum_rgb)
+
     print bins
+
+    import matplotlib.pyplot as plt
+    plt.hist(raw_sums, bins=25)
+    plt.title("Pixel values in an ice worm photo")
+    plt.xlabel("Sum of rgb values for each pixel")
+    plt.ylabel("Number of pixels")
+    plt.show()
+
 
 
 make_color_histogram()
