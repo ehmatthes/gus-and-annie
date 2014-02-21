@@ -1,0 +1,18 @@
+Notes - unshredder
+
+#  Losing a bit on the right due to division issues; if sample size does not perfectly divide
+#    image width.  But may be an issue with shredder, not unshredder?  Yes, can see missing stripe
+#    at right edge on nonstandard widths of shredded images.
+
+sample resolution:
+#  For instagram-given example, need s_r=1.  For some, res=85-200 works!
+#  Suggests a slider from efficient to accurate, stays efficient most of time,
+#   but can be adjusted for more complicated images.
+
+Put everything in functions, give it a cli, and auto-test on a batch of images.
+  Output to one large image.
+
+
+Submitting:
+Clean up comments - capitalize, etc.
+Other than that, no more refactoring.
