@@ -95,9 +95,25 @@ print len(worm_indices)
 def draw_red_worms(rows, worm_indices):
     # Redraw the image data, but draw all worm pixels in red.
     red_worms_image = Image.new("RGBA", raw_image.size)
+
+    pixel_num = 0
+    num_worm_pixels = 0
     for y, row in enumerate(rows):
+        print "Finished row %d of %d." % (y, len(rows))
         for x, pixel in enumerate(row):
-            red_worms_image.putpixel((x,y), pixel)
+
+            if pixel_num in worm_indices:
+                # Place a red pixel.
+                #print "Placing worm pixel %d." % num_worm_pixels
+                #num_worm_pixels += 1
+                red_worms_image.putpixel((x,y), (255,0,0,255))
+                #red_worms_image[x,y] = 100
+            else:
+                # Place original pixel
+                #red_worms_image.putpixel((x,y), pixel)
+                red_worms_image.putpixel((x,y), (255,255,255,255))
+            pixel_num += 1
+
     #red_worms_image.save('/home/ehmatthes/development/projects/ice_worms_counter/results/red_worms.jpg', 'JPEG')
     red_worms_image.save('results/red_worms.jpg', 'JPEG')
 
