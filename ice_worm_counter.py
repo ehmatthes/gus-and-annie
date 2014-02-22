@@ -10,7 +10,7 @@
 
 
 from PIL import Image
-import sys
+import math
 
 # Parameters
 # sample_res: How many rows to skip between samples
@@ -94,10 +94,26 @@ print len(worm_indices)
 
 def draw_red_worms(rows, worm_indices):
     # Redraw the image data, but draw all worm pixels in red.
-    red_worms_image = Image.new("RGBA", raw_image.size)
+    red_worms_image = Image.new("RGBA", raw_image.size, (255,255,255,255))
 
     pixel_num = 0
     num_worm_pixels = 0
+
+    for worm_index in worm_indices:
+        # These are the pixels that need to be drawn in red.
+        #  worm_index_y = floor (worm_index / image_width)
+        #  worm_index_x = remainder
+        # Write for py3 math, not dependent on py2 integer div
+        worm_index_y = int(math.floor(worm_index/image_width))
+        worm_index_x = worm_index % image_width
+        red_worms_image.putpixel((worm_index_x, worm_index_y), (255,0,0,255))
+
+
+    # Would png make better quality?
+    red_worms_image.save('results/red_worms.jpg', 'JPEG')
+
+    return 0
+
     for y, row in enumerate(rows):
         print "Finished row %d of %d." % (y, len(rows))
         for x, pixel in enumerate(row):
@@ -111,7 +127,8 @@ def draw_red_worms(rows, worm_indices):
             else:
                 # Place original pixel
                 #red_worms_image.putpixel((x,y), pixel)
-                red_worms_image.putpixel((x,y), (255,255,255,255))
+                #red_worms_image.putpixel((x,y), (255,255,255,255))
+                pass
             pixel_num += 1
 
     #red_worms_image.save('/home/ehmatthes/development/projects/ice_worms_counter/results/red_worms.jpg', 'JPEG')
