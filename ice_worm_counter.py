@@ -110,7 +110,7 @@ def draw_red_worms(rows, worm_indices):
 
 
     # Would png make better quality?
-    red_worms_image.save('results/red_worms.jpg', 'JPEG')
+    red_worms_image.save('results/red_worms.png', 'PNG')
 
     return 0
 
@@ -131,8 +131,7 @@ def draw_red_worms(rows, worm_indices):
                 pass
             pixel_num += 1
 
-    #red_worms_image.save('/home/ehmatthes/development/projects/ice_worms_counter/results/red_worms.jpg', 'JPEG')
-    red_worms_image.save('results/red_worms.jpg', 'JPEG')
+    red_worms_image.save('results/red_worms.png', 'PNG')
 
 
 
