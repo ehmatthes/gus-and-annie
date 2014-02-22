@@ -18,9 +18,17 @@ sample_res = 1
 
 # Open image, store data.
 raw_image = Image.open('raw_images/ice_worms_1_high_contrast.jpg')
-raw_image = Image.open('raw_images/ice_worms_1.jpg')
+#raw_image = Image.open('raw_images/ice_worms_1.jpg')
 image_data = raw_image.getdata()
 image_width, image_height = raw_image.size
+
+# List of raw sums of pixel data.
+raw_sums = []
+
+# Pixels that seem to be part of a worm.
+#  This is the indices in the raw_sums list.
+#  This list is of variable length.
+worm_indices = []
 
 
 def get_row(row_index):
@@ -38,7 +46,7 @@ for row_index in range(0, image_height):
     rows.append(get_row(row_index))
 
 
-def make_color_histogram():
+def make_color_histogram(raw_sums, worm_indices):
     # Make bins
     num_bins = 20
     bin_size = (3*255)/num_bins
@@ -47,9 +55,8 @@ def make_color_histogram():
     # Initialize bins.
     bins = [0 for bin in range(0,num_bins+1)]
 
-    raw_sums = []
-
     # Make a histogram of color values.
+    pixel_num = 0
     for row in rows:
         for pixel in row:
             sum_rgb = sum(pixel)
@@ -60,6 +67,13 @@ def make_color_histogram():
 
             raw_sums.append(sum_rgb)
 
+            # If this pixel is in the first bin, it's a worm.
+            if bin_number == 0:
+                worm_indices.append(pixel_num)
+
+            pixel_num += 1
+
+
     print bins
 
     import matplotlib.pyplot as plt
@@ -67,8 +81,26 @@ def make_color_histogram():
     plt.title("Pixel values in an ice worm photo")
     plt.xlabel("Sum of rgb values for each pixel")
     plt.ylabel("Number of pixels")
-    plt.show()
+    #plt.show()
 
 
 
-make_color_histogram()
+make_color_histogram(raw_sums, worm_indices)
+
+
+
+print len(raw_sums)
+print len(worm_indices)
+
+def draw_red_worms(rows, worm_indices):
+    # Redraw the image data, but draw all worm pixels in red.
+    red_worms_image = Image.new("RGBA", raw_image.size)
+    for y, row in enumerate(rows):
+        for x, pixel in enumerate(row):
+            red_worms_image.putpixel((x,y), pixel)
+    #red_worms_image.save('/home/ehmatthes/development/projects/ice_worms_counter/results/red_worms.jpg', 'JPEG')
+    red_worms_image.save('results/red_worms.jpg', 'JPEG')
+
+
+
+draw_red_worms(rows, worm_indices)
